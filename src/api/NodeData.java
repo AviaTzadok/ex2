@@ -23,6 +23,7 @@ public NodeData(int key){
         setLocation(n.getLocation());
     }
 
+
     @Override
     public int getKey() {
         return this.key;

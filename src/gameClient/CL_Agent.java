@@ -41,6 +41,7 @@ public class CL_Agent {
 				int id = ttt.getInt("id");
 				if(id==this.getID() || this.getID() == -1) {
 					if(this.getID() == -1) {_id = id;}
+
 					double speed = ttt.getDouble("speed");
 					String p = ttt.getString("pos");
 					Point3D pp = new Point3D(p);
@@ -139,6 +140,7 @@ public class CL_Agent {
 		public void set_curr_fruit(CL_Pokemon curr_fruit) {
 			this._curr_fruit = curr_fruit;
 		}
+
 		public void set_SDT(long ddtt) {
 			long ddt = ddtt;
 			if(this._curr_edge!=null) {
