@@ -4,6 +4,7 @@ import Server.Game_Server_Ex2;
 import api.*;
 import gameClient.util.Gframe;
 import gameClient.util.panel;
+import gameClient.util.play;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,11 +20,16 @@ public class Ex2 implements Runnable {
 	private static Arena _ar;
 	private static panel pa;
 	private static long shortime;
+	private static play p;
 	private static LinkedList<CL_Pokemon> frupok=new LinkedList<CL_Pokemon>();
 
 	public static void main(String[] a) {
-		Thread client = new Thread(new Ex2());
-		client.start();
+		Thread r = new Thread(){
+			public void run(){
+				p=new play();
+			}
+		};
+		r.start();
 	}
 
 	@Override
