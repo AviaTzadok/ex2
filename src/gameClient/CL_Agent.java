@@ -7,6 +7,8 @@ import api.node_data;
 import gameClient.util.Point3D;
 import org.json.JSONObject;
 
+import java.util.LinkedList;
+
 public class CL_Agent {
 		public static final double EPS = 0.0001;
 		private static int _count = 0;
@@ -20,6 +22,7 @@ public class CL_Agent {
 		private directed_weighted_graph _gg;
 		private CL_Pokemon _curr_fruit;
 		private long _sg_dt;
+		private LinkedList path;
 		
 		private double _value;
 		
