@@ -34,10 +34,8 @@ public class Ex2 implements Runnable {
 
 	@Override
 	public void run() {
-		int lvl_num = 11;
-		game_service game = Game_Server_Ex2.getServer(lvl_num); // you have [0,23] games
-		//	int id = 999;
-		//	game.login(id);
+		game_service game = Game_Server_Ex2.getServer(p.getLevel()); // you have [0,23] games
+			game.login(p.getId());
 		String sg = game.getGraph();
 		String pok = game.getPokemons();
 		System.out.println(sg);
