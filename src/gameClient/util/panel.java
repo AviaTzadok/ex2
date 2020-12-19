@@ -27,6 +27,7 @@ public class panel extends JPanel {
         ind=0;
         this.setBackground(Color.white);
         _ar= new Arena();
+
     }
 
 
@@ -56,12 +57,13 @@ public class panel extends JPanel {
 
 	}
 	private void drawInfo(Graphics g) {
-		List<String> str = _ar.get_info();
-		String dt = "none";
-		for(int i=0;i<str.size();i++) {
-			g.drawString(str.get(i)+" dt: "+dt,100,60+i*20);
+    	String s="";
+    	int counter=10;
+		for (CL_Agent agent: _ar.getAgents()) {
+			s = "Agent: " + agent.getID() + " Value: " + agent.getValue() + " Speed: " + agent.getSpeed();
+			g.drawString(s, 100, 60+counter + 1 * 20);
+			counter+=15;
 		}
-
 	}
 	private void drawGraph(Graphics g) {
 		directed_weighted_graph gg = _ar.getGraph();
@@ -79,25 +81,21 @@ public class panel extends JPanel {
 		}
 	}
 	private void drawPokemons(Graphics g) {
-		List<CL_Pokemon> fs = _ar.getPokemons();
-		if(fs!=null) {
-		Iterator<CL_Pokemon> itr = fs.iterator();
-
-		while(itr.hasNext()) {
-
-			CL_Pokemon f = itr.next();
-			Point3D c = f.getLocation();
+		CL_Pokemon[] fs= _ar.getPokemons().toArray(new CL_Pokemon[0]);
+		for (int i = 0; i < fs.length; i++) {
+			Point3D c = fs[i].getLocation();
 			int r=10;
 			g.setColor(Color.green);
-			if(f.getType()<0) {g.setColor(Color.orange);}
+			if(fs[i].getType()<0) {g.setColor(Color.orange);}
 			if(c!=null) {
 				geo_location fp = this.gameC.world2frame(c);
 				g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
-			//	g.drawString(""+n.getKey(), fp.ix(), fp.iy()-4*r);
+				//g.drawString(""+n.getKey(), fp.ix(), fp.iy()-4*r);
 
 			}
 		}
-		}
+
+
 	}
 	private void drawAgants(Graphics g) {
 		List<CL_Agent> rs = _ar.getAgents();

@@ -1,12 +1,19 @@
 package api;
-
+/**
+ * this class Represents the edges on the graph
+ */
 public class EdgeData implements edge_data {
     private int src;
     private int dest;
     private int tag;
     private String info;
     private double weight;
-
+    /**
+     * constructor who creates a new edge on the graph
+     *@param s
+     *@param d
+     *@param w
+     */
     public EdgeData(int s, int d, double w) {
         this.src = s;
         this.dest = d;

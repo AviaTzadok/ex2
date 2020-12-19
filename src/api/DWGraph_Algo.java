@@ -384,6 +384,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
     private class NodeHelperComparator implements Comparator<NodeHelper>{
 
+
         @Override
         public int compare(NodeHelper o1, NodeHelper o2) {
             if(o1.getTag()<o2.getTag()) return -1;
