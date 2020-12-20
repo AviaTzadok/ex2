@@ -20,7 +20,7 @@ public class Ex2 implements Runnable {
 	private static LinkedList<CL_Pokemon> frupok=new LinkedList<CL_Pokemon>();
 
 	public static void main(String[] a) {
-		Thread r = new Thread(){
+		Thread r = new Thread(new Ex2()){
 			public void run(){
 				p=new play();
 			}
@@ -104,6 +104,7 @@ public class Ex2 implements Runnable {
 	 * @param
 	 */
 	private static long moveAgants(game_service game, directed_weighted_graph gg) {
+
 		_ar.setTime(game.timeToEnd());
 		pa.update(_ar);
 		_win.repaint();
@@ -159,6 +160,12 @@ public class Ex2 implements Runnable {
 	 * @return
 	 */
 	private static int nextNode(directed_weighted_graph g, int src, CL_Pokemon pokemon,game_service game) {
+		String lgg = game.getAgents();
+		List<CL_Agent> llog = Arena.getAgents(lgg, g);
+		_ar.setAgents(llog);
+		String fs = game.getPokemons();
+		List<CL_Pokemon> ffs = Arena.json2Pokemons(fs);
+		_ar.setPokemons(ffs);
 		_ar.setTime(game.timeToEnd());
 		pa.update(_ar);
 		_win.repaint();
@@ -246,9 +253,12 @@ public class Ex2 implements Runnable {
 		return dt;
 	}
 	private static void catchpok(directed_weighted_graph gg, CL_Agent ag, CL_Pokemon pok, game_service game) {
-		_ar.setTime(game.timeToEnd());
-		pa.update(_ar);
-		_win.repaint();
+		String lgg = game.getAgents();
+		List<CL_Agent> llog = Arena.getAgents(lgg, gg);
+		_ar.setAgents(llog);
+		String fs = game.getPokemons();
+		List<CL_Pokemon> ffs = Arena.json2Pokemons(fs);
+		_ar.setPokemons(ffs);
 		double disedg = gg.getNode(ag.getSrcNode()).getLocation().distance(gg.getNode(pok.get_edge().getDest()).getLocation());
 		double we = gg.getEdge(ag.getSrcNode(), pok.get_edge().getDest()).getWeight();
 		double dis = pok.getLocation().distance(gg.getNode(ag.getSrcNode()).getLocation());
@@ -269,6 +279,12 @@ public class Ex2 implements Runnable {
 
 	}
     private static void timeraftercatch(directed_weighted_graph gg, CL_Agent ag, CL_Pokemon pok, game_service game) {
+		String lgg = game.getAgents();
+		List<CL_Agent> llog = Arena.getAgents(lgg, gg);
+		_ar.setAgents(llog);
+		String fs = game.getPokemons();
+		List<CL_Pokemon> ffs = Arena.json2Pokemons(fs);
+		_ar.setPokemons(ffs);
         double disedg = gg.getNode(ag.getSrcNode()).getLocation().distance(gg.getNode(pok.get_edge().getDest()).getLocation());
         double we = gg.getEdge(ag.getSrcNode(), pok.get_edge().getDest()).getWeight();
         double dis = pok.getLocation().distance(gg.getNode(pok.get_edge().getDest()).getLocation());
@@ -289,6 +305,7 @@ public class Ex2 implements Runnable {
 
 
 	private static void sortpoklist(directed_weighted_graph gg, game_service game, List<CL_Pokemon> lp) {
+
 		lp.sort(new Comparator<CL_Pokemon>() {
 			@Override
 			public int compare(CL_Pokemon o1, CL_Pokemon o2) {
@@ -298,11 +315,13 @@ public class Ex2 implements Runnable {
 		});
 		}
 private static void firstchoosenext(game_service game, List<CL_Agent> ags){
+
 	for (int i = 0; i < ags.size(); i++) {
 		game.chooseNextEdge(ags.get(i).getID(),ags.get(i).getNextNode());
 	}
 }
 private static CL_Agent checkifcatch(directed_weighted_graph gg,game_service game, List<CL_Agent> ags){
+
 	for (int i = 0; i <ags.size() ; i++) {
         if(ags.get(i).getSrcNode()==ags.get(i).get_curr_fruit().get_edge().getSrc()) {
             return ags.get(i);
@@ -315,16 +334,29 @@ private static CL_Agent checkifcatch(directed_weighted_graph gg,game_service gam
 	//לפני טיימר עשה בחירת דסט של הסרבר
 	//שמירת הזמן וואייל לזמן הקצר ביותר ושינה וברייק
 private static void setpath(directed_weighted_graph gg,game_service game,List <CL_Agent> ags,List <CL_Pokemon> pok){
+//	String lgg = game.getAgents();
+//	List<CL_Agent> llog = Arena.getAgents(lgg, gg);
+//	_ar.setAgents(llog);
+	String fs = game.getPokemons();
+	List<CL_Pokemon> ffs = Arena.json2Pokemons(fs);
+	_ar.setPokemons(ffs);
 	    CL_Agent ag=null;
     for (int a = 0; a <ags.size() ; a++) {
-        if(ags.get(a).get_curr_fruit()==null){
+		try {
+			sleep(50);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		if(ags.get(a).get_curr_fruit()==null){
              ag =ags.get(a);
             break;
         }
     }
 	sortpoklist(gg,game,pok);
 		int j=0;
+
 	for (int i = 0; i < ags.size(); i++) {
+
 		while (ags.get(i).get_curr_fruit()==pok.get(j)) {
 			j++;
 			i=0;
@@ -334,6 +366,7 @@ private static void setpath(directed_weighted_graph gg,game_service game,List <C
 	g0.init(gg);
 
 	if(g0.shortestPathDist(ag.getSrcNode(),pok.get(j).get_edge().getDest())!=-1){
+
 		List<node_data> shorted = g0.shortestPath(ag.getSrcNode(), pok.get(j).get_edge().getDest());
 		ag.set_curr_fruit(pok.get(j));
 		frupok.add(ag.get_curr_fruit());
@@ -348,6 +381,7 @@ private static void setpath(directed_weighted_graph gg,game_service game,List <C
 	}
 }
 private static void updateagents (List<CL_Agent> ags, List<CL_Pokemon> pok, directed_weighted_graph gg){
+
 	for (int j = 0; j <ags.size() ; j++) {
 		if(ags.get(j).get_curr_fruit()==null)
 			ags.get(j).set_curr_fruit(pok.get(j));

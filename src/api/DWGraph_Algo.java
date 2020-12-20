@@ -427,6 +427,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             directed_weighted_graph rg = revgraph();
             while (nodes.get(mn.getKey()).getTag() != 0) {
                 Iterator<edge_data> itrr = rg.getE(mn.getKey()).iterator();
+                System.out.println(nodes.get(mn.getKey()).getTag());
                 while (itrr.hasNext()) {
                     edge_data ee = itrr.next();
                     int nr = ee.getDest();
@@ -543,4 +544,5 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
         return true;
     }
+
 }

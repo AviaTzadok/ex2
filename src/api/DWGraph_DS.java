@@ -1,6 +1,8 @@
 package api;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class DWGraph_DS implements directed_weighted_graph{
@@ -18,6 +20,7 @@ public class DWGraph_DS implements directed_weighted_graph{
         this.EdgeNum=0;
         this.MC=0;
     }
+
     /**
      * this method return this node
      * @param key - the node_id
@@ -78,12 +81,19 @@ public class DWGraph_DS implements directed_weighted_graph{
 
     @Override
     public Collection<node_data> getV() {
-        if (nodes != null) return nodes.values();
-        return null;
+        if(nodes==null) {
+            Collection<node_data> co = new ArrayList<node_data>();
+            return co;
+        }
+        return nodes.values();
     }
 
     @Override
     public Collection<edge_data> getE(int node_id) {
+        if(edge.get(node_id)==null) {
+            Collection<edge_data> co = new ArrayList<edge_data>();
+            return co;
+        }
         return edge.get(node_id).values();
     }
     /**
@@ -119,7 +129,9 @@ public class DWGraph_DS implements directed_weighted_graph{
     @Override
     public edge_data removeEdge(int src, int dest) {
         if (!nodes.containsKey(src) && !nodes.containsKey(dest)) return null;
+        if(!edge.get(src).containsKey(dest)) return null;
         EdgeNum--;
+        MC++;
         return  edge.get(src).remove(dest);
     }
     /**
