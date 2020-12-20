@@ -7,6 +7,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * the class It creates and represents to us the opening screen of the game
+ */
 public class play extends JFrame implements ActionListener {
 
     JLabel IdNumber = new JLabel("Enter Id");

@@ -9,7 +9,10 @@ import java.awt.*;
 import java.util.Iterator;
 import java.util.List;
 
-
+/**
+ * This class shows us the graph and the course of the drink on our computer screen
+ * updates and shows at each shift the current state of the Pokemon and Agents graph
+ */
 public class panel extends JPanel {
 
     private static Arena _ar;
@@ -35,6 +38,9 @@ public class panel extends JPanel {
 
 	}
 
+	/**
+	 * This method update the frame over and over
+	 */
 	private void updateFrame() {
 		Range rx = new Range(20,this.getWidth()-20);
 		Range ry = new Range(this.getHeight()-10,150);
@@ -42,6 +48,11 @@ public class panel extends JPanel {
 		directed_weighted_graph g = _ar.getGraph();
 		gameC = Arena.w2f(g,frame);
 	}
+
+	/**
+	 * 	 * This method Paint oll the Components over and over
+	 * @param g
+	 */
 	public void paint(Graphics g) {
 		int w = this.getWidth();
 		int h = this.getHeight();
@@ -54,10 +65,20 @@ public class panel extends JPanel {
 		drawTimer(g);
 
 	}
+
+	/**
+	 * This method presents the timer of the game
+	 * @param g
+	 */
 	private void drawTimer(Graphics g){
 		g.drawString("Time to end: "+"00:"+(int)Timer/1000,100,135);
 
 	}
+
+	/**
+	 * This method presents the info of oll agents
+	 * @param g
+	 */
 	private void drawInfo(Graphics g) {
     	String s="";
     	int counter=10;
@@ -67,6 +88,11 @@ public class panel extends JPanel {
 			counter+=15;
 		}
 	}
+
+	/**
+	 * This method presents the graph
+	 * @param g
+	 */
 	private void drawGraph(Graphics g) {
 		directed_weighted_graph gg = _ar.getGraph();
 		Iterator<node_data> iter = gg.getV().iterator();
@@ -82,6 +108,11 @@ public class panel extends JPanel {
 			}
 		}
 	}
+
+	/**
+	 * This method presents the pokemons on the graph
+	 * @param g
+	 */
 	private void drawPokemons(Graphics g) {
 		CL_Pokemon[] fs= _ar.getPokemons().toArray(new CL_Pokemon[0]);
 		for (int i = 0; i < fs.length; i++) {
@@ -99,6 +130,11 @@ public class panel extends JPanel {
 
 
 	}
+
+	/**
+	 * This method presents the agent on the graph
+	 * @param g
+	 */
 	private void drawAgants(Graphics g) {
 		List<CL_Agent> rs = _ar.getAgents();
 	//	Iterator<OOP_Point3D> itr = rs.iterator();
@@ -115,12 +151,25 @@ public class panel extends JPanel {
 			}
 		}
 	}
+
+	/**
+	 * This method presents the nodes on the graph
+	 * @param n
+	 * @param r
+	 * @param g
+	 */
 	private void drawNode(node_data n, int r, Graphics g) {
 		geo_location pos = n.getLocation();
 		geo_location fp = this.gameC.world2frame(pos);
 		g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
 		g.drawString(""+n.getKey(), (int)fp.x(), (int)fp.y()-4*r);
 	}
+
+	/**
+	 * This method presents the edge on the graph
+	 * @param e
+	 * @param g
+	 */
 	private void drawEdge(edge_data e, Graphics g) {
 		directed_weighted_graph gg = _ar.getGraph();
 		geo_location s = gg.getNode(e.getSrc()).getLocation();
