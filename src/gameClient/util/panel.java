@@ -1,9 +1,8 @@
 package gameClient.util;
 
 
-import gameClient.Arena;
-import gameClient.CL_Agent;
-import gameClient.CL_Pokemon;
+import Server.Game_Server_Ex2;
+import gameClient.*;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Iterator;
@@ -15,8 +14,8 @@ import api.geo_location;
 import api.node_data;
 
 
-
 public class panel extends JPanel {
+
     private static Arena _ar;
     private int ind;
     private gameClient.util.Range2Range gameC;
