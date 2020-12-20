@@ -8,6 +8,30 @@ public class EdgeData implements edge_data {
     private int tag;
     private String info;
     private double weight;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        EdgeData edgeData = (EdgeData) o;
+
+        if (src != edgeData.src) return false;
+        if (dest != edgeData.dest) return false;
+        return Double.compare(edgeData.weight, weight) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = src;
+        result = 31 * result + dest;
+        temp = Double.doubleToLongBits(weight);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
     /**
      * constructor who creates a new edge on the graph
      *@param s

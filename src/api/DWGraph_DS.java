@@ -104,18 +104,24 @@ public class DWGraph_DS implements directed_weighted_graph{
     @Override
     public node_data removeNode(int key) {
         if(!nodes.containsKey(key)) return null;
+        if(edge.get(key)==null){
+            MC++;
+            return removeNode(key);
+        }
         for (node_data n: getV()) {
-            if(n.getKey()!=key){
+            if (n.getKey() != key) {
                 for (edge_data m : getE(n.getKey())) {
-                    if(m.getDest()==key) {
-                        edge.get(n.getKey()).remove(key);
+                    if (m.getDest() == key) {
+                        edge.get(m.getDest()).remove(key);
                         EdgeNum--;
                     }
-                }}
-            for (edge_data k: getE(key)) {
-                edge.get(key).remove(k.getDest());
-                EdgeNum--;
+                }
             }
+        }
+        edge_data[] edges=getE(key).toArray(new edge_data[0]);
+        for (int i = 0; i < edges.length; i++) {
+            edge.get(key).remove(edges[i].getDest());
+            EdgeNum--;
         }
         edge.remove(key);
         MC++;
@@ -163,5 +169,25 @@ public class DWGraph_DS implements directed_weighted_graph{
 
     public void setMC(int mc) {
         this.MC=mc;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DWGraph_DS that = (DWGraph_DS) o;
+
+        if (EdgeNum != that.EdgeNum) return false;
+        if (!nodes.equals(that.nodes)) return false;
+        return edge.equals(that.edge);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = nodes.hashCode();
+        result = 31 * result + edge.hashCode();
+        result = 31 * result + EdgeNum;
+        return result;
     }
 }
