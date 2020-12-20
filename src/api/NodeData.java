@@ -75,6 +75,21 @@ public NodeData(int key){
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        NodeData nodeData = (NodeData) o;
+
+        return key == nodeData.key;
+    }
+
+    @Override
+    public int hashCode() {
+        return key;
+    }
+
+    @Override
     public void setTag(int t) {
     this.tag=t;
     }
