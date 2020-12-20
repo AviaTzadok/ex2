@@ -2,16 +2,12 @@ package gameClient.util;
 
 
 import Server.Game_Server_Ex2;
+import api.*;
 import gameClient.*;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Iterator;
 import java.util.List;
-
-import api.directed_weighted_graph;
-import api.edge_data;
-import api.geo_location;
-import api.node_data;
 
 
 public class panel extends JPanel {
@@ -19,7 +15,8 @@ public class panel extends JPanel {
     private static Arena _ar;
     private int ind;
     private gameClient.util.Range2Range gameC;
-
+    private game_service game;
+    private float Timer;
 
     public panel(){
         super();
@@ -33,6 +30,7 @@ public class panel extends JPanel {
 
 	public void update(Arena ar) {
 		this._ar = ar;
+		Timer = ar.getTime();
 		updateFrame();
 
 	}
@@ -53,6 +51,11 @@ public class panel extends JPanel {
 		drawGraph(g);
 		drawAgants(g);
 		drawInfo(g);
+		drawTimer(g);
+
+	}
+	private void drawTimer(Graphics g){
+		g.drawString("Time to end: "+"00:"+(int)Timer/1000,100,135);
 
 	}
 	private void drawInfo(Graphics g) {

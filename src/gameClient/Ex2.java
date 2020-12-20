@@ -77,7 +77,9 @@ public class Ex2 implements Runnable {
                     e.printStackTrace();
                 }
                 game.move();
-                _win.repaint();
+				_ar.setTime(game.timeToEnd());
+				pa.update(_ar);
+				_win.repaint();
                 String lgg = game.getAgents();
                 List<CL_Agent> llog = Arena.getAgents(lgg, gg);
                 _ar.setAgents(llog);
@@ -102,7 +104,9 @@ public class Ex2 implements Runnable {
 	 * @param
 	 */
 	private static long moveAgants(game_service game, directed_weighted_graph gg) {
-
+		_ar.setTime(game.timeToEnd());
+		pa.update(_ar);
+		_win.repaint();
         List<CL_Agent> log = _ar.getAgents();
         List<CL_Pokemon> simpl = _ar.getPokemons();
         List<CL_Pokemon> sp = new LinkedList<CL_Pokemon>();
@@ -125,7 +129,9 @@ public class Ex2 implements Runnable {
                         //	System.out.println("enter the if src-enter to catch func");
                         catchpok(gg, ag, simpl.get(p), game);
                         Arena.updateEdge(sp.get(p), gg);
-                        _ar.setAgents(log);
+						_ar.setTime(game.timeToEnd());
+
+						_ar.setAgents(log);
                         _ar.setPokemons(simpl);
                     }
                     p++;
@@ -153,6 +159,9 @@ public class Ex2 implements Runnable {
 	 * @return
 	 */
 	private static int nextNode(directed_weighted_graph g, int src, CL_Pokemon pokemon,game_service game) {
+		_ar.setTime(game.timeToEnd());
+		pa.update(_ar);
+		_win.repaint();
 		int ans = -1;
 		DWGraph_Algo gaa = new DWGraph_Algo();
 		gaa.init(g);
@@ -191,6 +200,7 @@ public class Ex2 implements Runnable {
 		pa = new panel();
 		_win.add(pa);
 		pa.update(_ar);
+
 
 
 		_win.show();
@@ -236,6 +246,9 @@ public class Ex2 implements Runnable {
 		return dt;
 	}
 	private static void catchpok(directed_weighted_graph gg, CL_Agent ag, CL_Pokemon pok, game_service game) {
+		_ar.setTime(game.timeToEnd());
+		pa.update(_ar);
+		_win.repaint();
 		double disedg = gg.getNode(ag.getSrcNode()).getLocation().distance(gg.getNode(pok.get_edge().getDest()).getLocation());
 		double we = gg.getEdge(ag.getSrcNode(), pok.get_edge().getDest()).getWeight();
 		double dis = pok.getLocation().distance(gg.getNode(ag.getSrcNode()).getLocation());
@@ -250,6 +263,8 @@ public class Ex2 implements Runnable {
 			e.printStackTrace();
 		}
 		game.move();
+		_ar.setTime(game.timeToEnd());
+		pa.update(_ar);
 		_win.repaint();
 
 	}
@@ -266,7 +281,9 @@ public class Ex2 implements Runnable {
             e.printStackTrace();
         }
         game.move();
-        _win.repaint();
+		_ar.setTime(game.timeToEnd());
+		pa.update(_ar);
+		_win.repaint();
         ag.set_curr_fruit(null);
     }
 
