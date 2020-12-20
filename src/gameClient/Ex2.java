@@ -4,13 +4,10 @@ import Server.Game_Server_Ex2;
 import api.*;
 import gameClient.util.Gframe;
 import gameClient.util.panel;
-import org.jetbrains.annotations.NotNull;
+import gameClient.util.play;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.*;
-
-import static java.lang.Thread.getAllStackTraces;
 import static java.lang.Thread.sleep;
 
 public class Ex2 implements Runnable {
@@ -19,19 +16,22 @@ public class Ex2 implements Runnable {
 	private static Arena _ar;
 	private static panel pa;
 	private static long shortime;
+	private static play p;
 	private static LinkedList<CL_Pokemon> frupok=new LinkedList<CL_Pokemon>();
 
 	public static void main(String[] a) {
-		Thread client = new Thread(new Ex2());
-		client.start();
+		Thread r = new Thread(){
+			public void run(){
+				p=new play();
+			}
+		};
+		r.start();
 	}
 
 	@Override
 	public void run() {
-		int lvl_num = 11;
-		game_service game = Game_Server_Ex2.getServer(lvl_num); // you have [0,23] games
-		//	int id = 999;
-		//	game.login(id);
+		game_service game = Game_Server_Ex2.getServer(p.getLevel()); // you have [0,23] games
+			game.login(p.getId());
 		String sg = game.getGraph();
 		String pok = game.getPokemons();
 		System.out.println(sg);
@@ -77,7 +77,9 @@ public class Ex2 implements Runnable {
                     e.printStackTrace();
                 }
                 game.move();
-                _win.repaint();
+				_ar.setTime(game.timeToEnd());
+				pa.update(_ar);
+				_win.repaint();
                 String lgg = game.getAgents();
                 List<CL_Agent> llog = Arena.getAgents(lgg, gg);
                 _ar.setAgents(llog);
@@ -86,13 +88,7 @@ public class Ex2 implements Runnable {
                 _ar.setPokemons(ffs);
 
 				updateagents(_ar.getAgents(),_ar.getPokemons(),gg);
-
-			//	System.out.println(_ar.getAgents());
-//                _ar.getAgents().get(i).set_curr_fruit(tarpok);
-
             }
-
-
 		}
 		String res = game.toString();
 		System.out.println(res);
@@ -108,7 +104,9 @@ public class Ex2 implements Runnable {
 	 * @param
 	 */
 	private static long moveAgants(game_service game, directed_weighted_graph gg) {
-
+		_ar.setTime(game.timeToEnd());
+		pa.update(_ar);
+		_win.repaint();
         List<CL_Agent> log = _ar.getAgents();
         List<CL_Pokemon> simpl = _ar.getPokemons();
         List<CL_Pokemon> sp = new LinkedList<CL_Pokemon>();
@@ -118,63 +116,35 @@ public class Ex2 implements Runnable {
         int p = 0;
         for (int i = 0; i < log.size(); i++) {
             CL_Agent ag = log.get(i);
-            //System.out.println("in for:ag value  after eat "+ag.getValue());
-            //	System.out.println(ag.getNextNode());
+
             int agid = ag.getID();
             int dest = ag.getNextNode();
             int src = ag.getSrcNode();
             CL_Pokemon tarpok = ag.get_curr_fruit();
             if (dest == -1&&ag.get_curr_fruit()!=null) {
-                //ag.set_curr_fruit(sp.get(i));
-                //catch the pokemon in your way even if you on the way to another pokemon with bigger value
-                //if(dest==-1 && ag.getSrcNode()==simpl.get(j).get_edge().getSrc()){
-                //	System.out.println("entr");
-                //	catchpok(gg,ag, simpl.get(j),game);
-                //	break;
-                //	}
-                //	if (dest == -1) {
-                //	if (_ar.getAgents().get(i).get_curr_fruit().get_edge().getSrc() == _ar.getAgents().get(i).getSrcNode()) {
-                //		catchpok(gg, _ar.getAgents().get(i), simpl.get(1), game);
-                //		break;
-                //	}
 
-                //	System.out.println(ag.getSrcNode());
-                //	System.out.println(simpl.get(j).get_edge().getSrc());
                 while (p < sp.size()) {
                     Arena.updateEdge(_ar.getPokemons().get(p), gg);
                     if (ag.getSrcNode() == simpl.get(p).get_edge().getSrc()&& !frupok.contains(simpl.get(p))) {
                         //	System.out.println("enter the if src-enter to catch func");
                         catchpok(gg, ag, simpl.get(p), game);
                         Arena.updateEdge(sp.get(p), gg);
-                        _ar.setAgents(log);
+						_ar.setTime(game.timeToEnd());
+
+						_ar.setAgents(log);
                         _ar.setPokemons(simpl);
-                        //	System.out.println("ag value immediately after eat " + ag.getValue());
                     }
                     p++;
                 }
 
-                ///if-1 end
-
-                //System.out.println("the pokemons: " + simpl);
-                //System.out.println("the pokemon is the sort list: " + sp);
                 dest = nextNode(gg, src, ag.get_curr_fruit(), game);
                 ag.setNextNode(dest);
 
-				//uagpok.put(ag.getID(),ag.get_curr_fruit());
-
-//                System.out.println("the src now is: " + src);
-           // System.out.println("the dest now is: " + dest);
-//                System.out.println("the fruit now is: "+ag.get_curr_fruit());
                 game.chooseNextEdge(agid, dest);
                 if (timeredg(gg, src, dest, ag) < shti) {
 					shti = timeredg(gg, src, dest, ag);
 				}
 				shortime=shti;
-				//	timeredg(gg, src, dest, ag);
-                //game.move();
-                //_win.repaint();
-                //_ar.setAgents(log);
-                //_ar.setPokemons(simpl);
 
 			}
         }
@@ -189,30 +159,26 @@ public class Ex2 implements Runnable {
 	 * @return
 	 */
 	private static int nextNode(directed_weighted_graph g, int src, CL_Pokemon pokemon,game_service game) {
+		_ar.setTime(game.timeToEnd());
+		pa.update(_ar);
+		_win.repaint();
 		int ans = -1;
-		//	if (e.getInfo() != "vis") {
 		DWGraph_Algo gaa = new DWGraph_Algo();
 		gaa.init(g);
 		edge_data e = pokemon.get_edge();
 		node_data me = g.getNode(e.getSrc());
 		List<node_data> shorted = gaa.shortestPath(src, me.getKey());
-		//	System.out.println("aaaaaaa");
-
 		if (shorted.size() == 1) {
 			e.setInfo("vis");
-			//	System.out.println("bbbbb");
 			return e.getDest();
 		}
 
 		while (!shorted.isEmpty()) {
 			e = g.getEdge(src, shorted.get(1).getKey());
-			//shorted.remove(0);
 			e.setInfo("vis");
-			//System.out.println("cccccc");
 			return shorted.get(1).getKey();
-
 		}
-		//}
+
 		return ans;
 	}
 	private void init(game_service game) {
@@ -236,6 +202,7 @@ public class Ex2 implements Runnable {
 		pa.update(_ar);
 
 
+
 		_win.show();
 		String info = game.toString();
 		JSONObject line;
@@ -252,7 +219,6 @@ public class Ex2 implements Runnable {
 			}
 			sortpoklist(ggg,game,cl_fs);
 			for (int a = 0; a < rs; a++) {
-				//int ind = a % cl_fs.size();
 				CL_Pokemon c = cl_fs.get(a);
 				int nn = c.get_edge().getDest();
 				if (c.getType() < 0) {
@@ -267,8 +233,6 @@ public class Ex2 implements Runnable {
 				ags.get(i).set_curr_fruit(cl_fs.get(i));
 				ags.get(i).setNextNode(cl_fs.get(i).get_edge().getDest());
 			}
-			//after start do game choose next before while running
-
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -278,27 +242,20 @@ public class Ex2 implements Runnable {
 		double v = ag.getSpeed();
 		double s = gg.getEdge(src, dest).getWeight();
 		long dt = (long) ((s / v) * 1000);
-//		try {
-//			sleep(dt);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
+
 		return dt;
 	}
-
-	//Improvement timeredg and catchpok
 	private static void catchpok(directed_weighted_graph gg, CL_Agent ag, CL_Pokemon pok, game_service game) {
+		_ar.setTime(game.timeToEnd());
+		pa.update(_ar);
+		_win.repaint();
 		double disedg = gg.getNode(ag.getSrcNode()).getLocation().distance(gg.getNode(pok.get_edge().getDest()).getLocation());
 		double we = gg.getEdge(ag.getSrcNode(), pok.get_edge().getDest()).getWeight();
 		double dis = pok.getLocation().distance(gg.getNode(ag.getSrcNode()).getLocation());
 		double re = dis / disedg;
 		double v = ag.getSpeed();
 		long dt = (long) (((re / v) * we) * 1000);
-//		System.out.println("ag id: "+ag.getID());
-//		System.out.println("ag src: "+ag.getSrcNode());
-//		System.out.println("pok src: "+pok.get_edge().getSrc());
-//		System.out.println("pok dest: "+pok.get_edge().getDest());
-//		System.out.println("pok value: "+pok.getValue());
+
 		game.chooseNextEdge(ag.getID(), pok.get_edge().getDest());
 		try {
 			sleep(dt);
@@ -306,9 +263,10 @@ public class Ex2 implements Runnable {
 			e.printStackTrace();
 		}
 		game.move();
+		_ar.setTime(game.timeToEnd());
+		pa.update(_ar);
 		_win.repaint();
-		//Arena.updateEdge(pok, gg);
-		// System.out.println(ag.getValue());
+
 	}
     private static void timeraftercatch(directed_weighted_graph gg, CL_Agent ag, CL_Pokemon pok, game_service game) {
         double disedg = gg.getNode(ag.getSrcNode()).getLocation().distance(gg.getNode(pok.get_edge().getDest()).getLocation());
@@ -323,7 +281,9 @@ public class Ex2 implements Runnable {
             e.printStackTrace();
         }
         game.move();
-        _win.repaint();
+		_ar.setTime(game.timeToEnd());
+		pa.update(_ar);
+		_win.repaint();
         ag.set_curr_fruit(null);
     }
 
@@ -340,17 +300,11 @@ public class Ex2 implements Runnable {
 private static void firstchoosenext(game_service game, List<CL_Agent> ags){
 	for (int i = 0; i < ags.size(); i++) {
 		game.chooseNextEdge(ags.get(i).getID(),ags.get(i).getNextNode());
-
 	}
 }
 private static CL_Agent checkifcatch(directed_weighted_graph gg,game_service game, List<CL_Agent> ags){
-//    System.out.println("the agents int he check: "+ags);
 	for (int i = 0; i <ags.size() ; i++) {
-//       System.out.println("the fruit of the ag in check: "+ags.get(i).get_curr_fruit());
-
-
         if(ags.get(i).getSrcNode()==ags.get(i).get_curr_fruit().get_edge().getSrc()) {
-//            System.out.println("the fruit of the ag in check: " + ags.get(i).get_curr_fruit());
             return ags.get(i);
         }
 	}
@@ -368,8 +322,6 @@ private static void setpath(directed_weighted_graph gg,game_service game,List <C
             break;
         }
     }
-//    System.out.println(ag.getSrcNode());
-//	System.out.println(ag.get_curr_fruit());
 	sortpoklist(gg,game,pok);
 		int j=0;
 	for (int i = 0; i < ags.size(); i++) {
@@ -378,7 +330,6 @@ private static void setpath(directed_weighted_graph gg,game_service game,List <C
 			i=0;
 		}
 	}
-
 	DWGraph_Algo g0 = new DWGraph_Algo();
 	g0.init(gg);
 
@@ -393,13 +344,6 @@ private static void setpath(directed_weighted_graph gg,game_service game,List <C
 			game.chooseNextEdge(ag.getID(), shorted.get(1).getKey());
 		}
         ag.setNextNode(-1);
-
-//        System.out.println("after set -fruit: "+ag.get_curr_fruit());
-//        System.out.println("after set "+j);
-//        System.out.println("after set "+ag.getSrcNode());
-//        System.out.println("after set "+pok.get(j).get_edge().getDest());
-//        System.out.println("after set dest: "+ag.getNextNode());
-
         shorted.remove(0);
 	}
 }

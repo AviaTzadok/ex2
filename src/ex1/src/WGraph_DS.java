@@ -1,5 +1,6 @@
 package ex1.src;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -8,7 +9,7 @@ import java.util.HashMap;
  * This class implements the graph interface and represents an undirected unweighted graph.
  * this graph support a large number of nodes (over 10^6, with average degree of 10)
  */
-public class WGraph_DS implements weighted_graph, Comparator<node_info> {
+public class WGraph_DS implements weighted_graph, Comparator<node_info>,Serializable{
     private HashMap<Integer, node_info> nodes;
     private HashMap<Integer, HashMap<Integer, Double>> Neighbor;
     private int EdgeNum;

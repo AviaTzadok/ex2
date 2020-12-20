@@ -1,13 +1,18 @@
 package api;
 
-
+/**
+ * this class Represents the nods on the graph
+ */
 public class NodeData implements node_data {
     private int key;
     private int tag;
     private double weight;
     private String info;
     private  geo_location location;
-
+    /**
+     * constructor who creates a new node on the graph
+     *@param key
+     */
 public NodeData(int key){
     this.key=key;
     this.tag=0;

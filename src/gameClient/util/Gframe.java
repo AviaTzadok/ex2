@@ -13,12 +13,8 @@ public class Gframe extends JFrame {
         _ar= new Arena();
         pa= new panel();
         this.add(pa);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-//        Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
-//        int w=dim.width;
-//        int he= dim.height;
-//        this.setSize(w,he);
-//        this.setVisible(true);
     }
 
 }

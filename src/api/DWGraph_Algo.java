@@ -285,7 +285,10 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     public directed_weighted_graph getGraph() {
         return this.Graph;
     }
-
+    /**
+     * this methode creates a deep copy of this graph
+     * @return copy graph
+     */
     @Override
     public directed_weighted_graph copy() {
         DWGraph_DS gr = new DWGraph_DS();
@@ -302,7 +305,10 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return gr;
 
     }
-    //check
+    /**
+     *this method checks whether the graph is connected
+     * @return true or false
+     */
     @Override
     public boolean isConnected() {
         int v = Graph.nodeSize();
@@ -360,6 +366,14 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             this.n = n;
         }
     }
+    /**
+     * this method return the shortest path between  these nodes By schematic of the weight of the ribs between the vertices
+     * We implemented the priority queue function in DWGraph_DS
+     * so when we created the priority queue we instructed him to take the implementation in DWGraph_DS
+     * @param src - start node
+     * @param dest - end (target) node
+     * @return The shortest path size
+     */
     @Override
     public double shortestPathDist(int src, int dest) {
         nodes=new HashMap<Integer, NodeHelper>();
@@ -384,6 +398,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
     private class NodeHelperComparator implements Comparator<NodeHelper>{
 
+
         @Override
         public int compare(NodeHelper o1, NodeHelper o2) {
             if(o1.getTag()<o2.getTag()) return -1;
@@ -391,9 +406,12 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             return 0;
         }
     }
-
-
-    //must check again
+    /**
+     * this methode returns the a list of the nodes of the shortest path between the nodes
+     * @param src - start node
+     * @param dest - end (target) node
+     * @return list of nodes
+     */
     @Override
     public List<node_data> shortestPath(int src, int dest) {
         if (Graph.getNode(src) != null && Graph.getNode(dest) != null) {
@@ -424,6 +442,10 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         else return null;
     }
 
+    /**
+     * this methode Reverses the order of the vertices we got from shortestPath
+     * @return
+     */
     public directed_weighted_graph revgraph() {
         DWGraph_DS rg = new DWGraph_DS();
         node_data[]arr= Graph.getV().toArray(new node_data[0]);
@@ -440,7 +462,12 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         rg.setMC(Graph.getMC());
         return rg;
     }
-
+    /**
+     * This method saves the graph we created in a text file on our computer by converting our programming language to a text file
+     * Attached is a link to the site from which I took the code
+     * @param file - the file name (may include a relative path).
+     * @return
+     */
     @Override
     public boolean save(String file) {
         Gson gson = new GsonBuilder().create();
@@ -477,6 +504,12 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             return g0;
         }
     }
+    /**
+     * This method uploads a text file of our graph from the computer and converts it into a programming language
+     * Attached is a link to the site from which I took the code
+     * @param file - file name
+     * @return
+     */
     @Override
     public boolean load(String file) {
         GsonBuilder g=new GsonBuilder();
