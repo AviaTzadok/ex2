@@ -35,14 +35,14 @@ public interface directed_weighted_graph {
      * * Note: this method should run in O(1) time.
      * @param src - the source of the edge.
      * @param dest - the destination of the edge.
-     * @param w - positive weight representing the cost (aka time, price, etc) between src-->dest.
+     * @param w - positive weight representing the cost (aka time, price, etc) between src--dest.
      */
     public void connect(int src, int dest, double w);
     /**
      * This method returns a pointer (shallow copy) for the
      * collection representing all the nodes in the graph.
      * Note: this method should run in O(1) time.
-     * @return Collection<node_data>
+     * @return Collection
      */
     public Collection<node_data> getV();
     /**
@@ -50,7 +50,8 @@ public interface directed_weighted_graph {
      * collection representing all the edges getting out of
      * the given node (all the edges starting (source) at the given node).
      * Note: this method should run in O(k) time, k being the collection size.
-     * @return Collection<edge_data>
+     * @param node_id
+     * @return Collection
      */
     public Collection<edge_data> getE(int node_id);
     /**

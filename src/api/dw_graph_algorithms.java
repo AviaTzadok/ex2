@@ -6,7 +6,7 @@ import java.util.List;
  * 1. init(graph);
  * 2. isConnected(); // strongly (all ordered pais connected)
  * 3. double shortestPathDist(int src, int dest);
- * 4. List<node_data> shortestPath(int src, int dest);
+ * 4. List shortestPath(int src, int dest);
  * 5. Save(file); // JSON file
  * 6. Load(file); // JSON file
  *
@@ -38,17 +38,15 @@ public interface dw_graph_algorithms {
     public boolean isConnected();
     /**
      * returns the length of the shortest path between src to dest
-     * Note: if no such path --> returns -1
+     * Note: if no such path returns -1
      * @param src - start node
      * @param dest - end (target) node
-     * @return
      */
     public double shortestPathDist(int src, int dest);
     /**
      * returns the the shortest path between src to dest - as an ordered List of nodes:
-     * src--> n1-->n2-->...dest
      * see: https://en.wikipedia.org/wiki/Shortest_path_problem
-     * Note if no such path --> returns null;
+     * Note if no such path returns null;
      * @param src - start node
      * @param dest - end (target) node
      * @return

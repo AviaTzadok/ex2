@@ -39,7 +39,7 @@ public class DWGraph_DS implements directed_weighted_graph{
     }
     /**
      * this method add node to the graph
-     * @param
+     * @param n
      */
     @Override
     public void addNode(node_data n) {

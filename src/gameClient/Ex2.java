@@ -17,37 +17,24 @@ public class Ex2 implements Runnable {
 	private static panel pa;
 	private static long shortime;
 	private static play p;
-	private static String[] aa=new String[0];
 	private static LinkedList<CL_Pokemon> frupok=new LinkedList<CL_Pokemon>();
 
 	public static void main(String[] a) {
-		if (a.length == 0) {
-			Thread r = new Thread(new Ex2()) {
-				public void run() {
-					p = new play();
-				}
-			};
-			r.start();
-		} else {
-			aa=a;
-			Thread r = new Thread(new Ex2());
-			r.start();
-		}
+		Thread r = new Thread(new Ex2()){
+			public void run(){
+				p=new play();
+			}
+		};
+		r.start();
 	}
+
 	@Override
 	public void run() {
-		game_service game;
-		if(aa.length==0) {
-			game = Game_Server_Ex2.getServer(p.getLevel()); // you have [0,23] games
-			game.login(p.getId());
-		}else{
-			int level =Integer.parseInt(aa[1]);
-			long id=Long.parseLong(aa[0]);
-			game =Game_Server_Ex2.getServer(level);
-			game.login(id);
-		}
+		game_service game = Game_Server_Ex2.getServer(p.getLevel()); // you have [0,23] games
+		game.login(p.getId());
 		String sg = game.getGraph();
 		String pok = game.getPokemons();
+		System.out.println(sg);
 		DWGraph_Algo g1 = new DWGraph_Algo();
 		DWGraph_DS gra = new DWGraph_DS();
 		g1.init(gra);
@@ -55,6 +42,7 @@ public class Ex2 implements Runnable {
 		directed_weighted_graph gg = g1.getGraph();
 		init(game);
 		game.startGame();
+		////////////////////////game choose next/////////////
 		firstchoosenext(game,_ar.getAgents());
 		_win.setTitle("Ex2 - OOP: (NONE trivial Solution) " + game.toString());
 		while (game.isRunning()) {
@@ -62,12 +50,15 @@ public class Ex2 implements Runnable {
 			if(redag!=null){
 				catchpok(gg,redag,redag.get_curr_fruit(),game);
 				timeraftercatch(gg,redag,redag.get_curr_fruit(),game);
+
 				String fs = game.getPokemons();
 				List<CL_Pokemon> ffs = Arena.json2Pokemons(fs);
 				_ar.setPokemons(ffs);
 				String lgg = game.getAgents();
 				List<CL_Agent> log = Arena.getAgents(lgg, gg);
 				_ar.setAgents(log);
+
+
 				for (int i = 0; i <_ar.getPokemons().size() ; i++) {
 					Arena.updateEdge(_ar.getPokemons().get(i),gg);
 				}
@@ -89,7 +80,7 @@ public class Ex2 implements Runnable {
 				String fs = game.getPokemons();
 				List<CL_Pokemon> ffs = Arena.json2Pokemons(fs);
 				_ar.setPokemons(ffs);
-
+				
 				updateagents(_ar.getAgents(),_ar.getPokemons(),gg);
 			}
 		}
@@ -218,6 +209,8 @@ public class Ex2 implements Runnable {
 			line = new JSONObject(info);
 			JSONObject ttt = line.getJSONObject("GameServer");
 			int rs = ttt.getInt("agents");
+			System.out.println(info);
+			System.out.println(game.getPokemons());
 			int src_node = 0;  // arbitrary node, you should start at one of the pokemon
 			ArrayList<CL_Pokemon> cl_fs = Arena.json2Pokemons(game.getPokemons());
 			for (int a = 0; a < cl_fs.size(); a++) {
@@ -319,10 +312,10 @@ public class Ex2 implements Runnable {
 			game.chooseNextEdge(ags.get(i).getID(),ags.get(i).getNextNode());
 		}
 	}
-	private static CL_Agent checkifcatch(directed_weighted_graph gg,game_service game, List<CL_Agent> ags){
+	private static CL_Agent checkifcatch(directed_weighted_graph gg,game_service game, List<CL_Agent> ags) {
 
-		for (int i = 0; i <ags.size() ; i++) {
-			if(ags.get(i).getSrcNode()==ags.get(i).get_curr_fruit().get_edge().getSrc()) {
+		for (int i = 0; i < ags.size(); i++) {
+			if (ags.get(i).getSrcNode() == ags.get(i).get_curr_fruit().get_edge().getSrc()) {
 				return ags.get(i);
 			}
 		}
